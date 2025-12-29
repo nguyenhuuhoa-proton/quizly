@@ -89,7 +89,6 @@ questions:
   - type: true_false_group
     question:
       text: "Đánh dấu đúng sai về các nhận định sau:"
-      text: "![Genshin Impact 6.2](https://cdn-media.sforum.vn/storage/app/media/Bookgrinder2/genshin-impact-luna-3-1.jpg)
     items:
       a:
         text: "Paimon là Emergency Food (đùa vui trong cộng đồng)."
