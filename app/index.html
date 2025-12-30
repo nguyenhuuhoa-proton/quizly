@@ -1073,8 +1073,14 @@
             const overlay = document.getElementById('sidebarOverlay');
 
             toggle.addEventListener('click', () => {
-                sidebar.classList.add('active');
-                overlay.classList.add('active');
+                const isActive = sidebar.classList.contains('active');
+                if (isActive) {
+                    sidebar.classList.remove('active');
+                    overlay.classList.remove('active');
+                } else {
+                    sidebar.classList.add('active');
+                    overlay.classList.add('active');
+                }
             });
 
             overlay.addEventListener('click', () => {
