@@ -193,14 +193,17 @@
             background: #28cc9e;
             color: white;
             border: none;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            font-size: 24px;
+            width: 120px;
+            height: 48px;
+            border-radius: 24px;
+            font-size: 18px;
+            font-weight: 700;
+            font-family: 'Courier New', monospace;
             cursor: pointer;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
             z-index: 1000;
             transition: all 0.3s;
+            padding: 0 16px;
         }
 
         .sidebar-toggle:hover {
@@ -996,7 +999,9 @@
         </div>
 
         <!-- Mobile Sidebar Toggle -->
-        <button id="sidebarToggle" class="sidebar-toggle">☰</button>
+        <button id="sidebarToggle" class="sidebar-toggle">
+            <span id="mobileTimer">00:00:00</span>
+        </button>
 
         <!-- Main Content -->
         <div class="main-content">
@@ -1198,12 +1203,17 @@
                         submitExam();
                         return;
                     }
-                    document.getElementById('timer').textContent = formatTime(remaining);
+                    const timeText = formatTime(remaining);
+                    document.getElementById('timer').textContent = timeText;
+                    document.getElementById('mobileTimer').textContent = timeText;
                     if (remaining <= 60) {
                         document.getElementById('timer').classList.add('timer-warning');
+                        document.getElementById('mobileTimer').parentElement.style.background = '#d97757';
                     }
                 } else {
-                    document.getElementById('timer').textContent = formatTime(elapsed);
+                    const timeText = formatTime(elapsed);
+                    document.getElementById('timer').textContent = timeText;
+                    document.getElementById('mobileTimer').textContent = timeText;
                 }
             }, 1000);
         }
