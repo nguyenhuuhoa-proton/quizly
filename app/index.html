@@ -559,7 +559,7 @@
 
         .score-summary {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 30px;
             margin-bottom: 40px;
         }
@@ -1014,19 +1014,7 @@
         <div class="results-content">
             <h1>Kết quả ôn tập</h1>
             
-            <div class="score-summary">
-                <div class="score-card">
-                    <div class="score-label">Trắc nghiệm</div>
-                    <div class="score-percent" id="multipleChoicePercent">0%</div>
-                    <div class="score-value" id="multipleChoiceScore">0/0</div>
-                </div>
-                
-                <div class="score-card">
-                    <div class="score-label">Tự luận (Trung bình)</div>
-                    <div class="score-percent" id="essayPercent">Đang chấm</div>
-                    <div class="score-value" id="essayPercentValue">—</div>
-                </div>
-            </div>
+            <div class="score-summary" id="scoreSummary"></div>
 
             <div class="results-details">
                 <h2>Chi tiết kết quả</h2>
@@ -1534,22 +1522,35 @@
                 }
             });
 
-            // Display multiple choice results immediately
-            document.getElementById('multipleChoiceScore').textContent = 
-                `${multipleChoiceCorrect}/${multipleChoiceTotal}`;
-            document.getElementById('multipleChoicePercent').textContent = 
-                multipleChoiceTotal > 0 
-                    ? `${Math.round(multipleChoiceCorrect / multipleChoiceTotal * 100)}%`
-                    : 'N/A';
+            // Build score summary dynamically
+            const scoreSummary = document.getElementById('scoreSummary');
+            scoreSummary.innerHTML = '';
 
-            // Setup essay summary UI: show animated ellipsis while grading if there are any pending to grade
+            // Display multiple choice card if exists
+            if (multipleChoiceTotal > 0) {
+                const mcCard = document.createElement('div');
+                mcCard.className = 'score-card';
+                mcCard.innerHTML = `
+                    <div class="score-label">Trắc nghiệm</div>
+                    <div class="score-percent">${Math.round(multipleChoiceCorrect / multipleChoiceTotal * 100)}%</div>
+                    <div class="score-value">${multipleChoiceCorrect}/${multipleChoiceTotal}</div>
+                `;
+                scoreSummary.appendChild(mcCard);
+            }
+
+            // Display essay card if exists
             const totalEssayCount = essayTotal;
             if (totalEssayCount > 0) {
-                document.getElementById('essayPercentValue').textContent = `* (${totalEssayCount} câu)`;
+                const essayCard = document.createElement('div');
+                essayCard.className = 'score-card';
+                essayCard.id = 'essayCard';
+                essayCard.innerHTML = `
+                    <div class="score-label">Tự luận (Trung bình)</div>
+                    <div class="score-percent" id="essayPercent">Đang chấm</div>
+                    <div class="score-value" id="essayPercentValue">* (${totalEssayCount} câu)</div>
+                `;
+                scoreSummary.appendChild(essayCard);
                 startEssayEllipsis();
-            } else {
-                document.getElementById('essayPercentValue').textContent = 'N/A';
-                document.getElementById('essayPercent').textContent = 'N/A';
             }
 
             // Display results (no per-question spinner — global status only)
