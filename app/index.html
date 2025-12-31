@@ -112,6 +112,20 @@
             font-size: 18px;
         }
 
+        /* Quizly Logo */
+        .quizly-logo {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
+            transition: transform 0.3s;
+            display: block;
+        }
+
+        .quizly-logo:hover {
+            transform: scale(1.05);
+        }
+
         /* Exam Info Screen */
         .exam-info-screen {
             display: flex;
@@ -813,6 +827,20 @@
 
         /* Responsive */
         @media (max-width: 768px) {
+            .quizly-logo {
+                top: 10px;
+                left: 10px;
+            }
+
+            .quizly-logo svg {
+                width: 90px;
+                height: 30px;
+            }
+
+            .quizly-logo text {
+                font-size: 16px;
+                y: 20px;
+            }
             .exam-screen {
                 flex-direction: column;
             }
@@ -942,6 +970,12 @@
 
     <!-- Exam Info Screen -->
     <div id="examInfoScreen" class="exam-info-screen hidden">
+        <a href="https://github.com/nguyenhuuhoa-proton/quizly" class="quizly-logo" target="_blank">
+            <svg width="120" height="40" viewBox="0 0 120 40" xmlns="http://www.w3.org/2000/svg">
+                <rect width="120" height="40" rx="8" fill="white" opacity="0.95"/>
+                <text x="60" y="26" font-family="Arial, sans-serif" font-size="20" font-weight="700" text-anchor="middle" fill="#28cc9e">Quizly</text>
+            </svg>
+        </a>
         <div class="exam-info-content">
             <h1 id="examTitle"></h1>
             <div class="exam-meta">
@@ -1623,18 +1657,21 @@
         function finalizeEssaySummary(totalEssayCount) {
             stopEssayEllipsis();
 
-            // Compute average — treat any null (failed grading) as 0
+            // Compute average – skip questions with null score (failed grading)
             const scores = [];
             for (let i = 0; i < questions.length; i++) {
                 if (questions[i].type === 'essay') {
                     const r = essayResults[i];
-                    scores.push((r && typeof r.score === 'number') ? r.score : 0);
+                    if (r && typeof r.score === 'number') {
+                        scores.push(r.score);
+                    }
                 }
             }
 
             const avg = scores.length > 0 ? (scores.reduce((s, v) => s + v, 0) / scores.length) : 0;
+            const totalGraded = scores.length;
             document.getElementById('essayPercent').textContent = `${Math.round(avg)}%`;
-            document.getElementById('essayPercentValue').textContent = `${scores.length}/${scores.length}`;
+            document.getElementById('essayPercentValue').textContent = `${totalGraded}/${totalEssayCount}`;
         }
 
         // Grade single essay question
