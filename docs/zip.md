@@ -203,13 +203,8 @@ media:
 - Không nén thư mục cha
 
 ### Media:
-- Tên file không chứa ký tự đặc biệt, khoảng trắng (dùng `_` hoặc `-`)
+- Tên file không chứa ký tự đặc biệt
 - Tên file phân biệt hoa thường (case-sensitive)
-- Kích thước hợp lý: Hình ảnh < 5MB, Audio < 10MB, Video < 50MB
-
-### Chấm điểm:
-- **Trắc nghiệm**: Đúng = 1 điểm, Sai = 0 điểm
-- **Đúng/Sai**: Phải đúng TẤT CẢ items mới được 1 điểm
 
 ---
 
